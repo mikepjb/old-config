@@ -139,11 +139,8 @@ nnoremap gb :Git blame<cr>
 nnoremap <C-q> :quit<cr>
 nnoremap <leader>h :LSClientShowHover<CR>
 if executable('selecta')
-  if executable('fd')
-    nnoremap <leader>f :call SelectaFile(".", "*", ":edit")<cr>
-  else
-    nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
-  endif
+  " nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
+  nnoremap <leader>f :call SelectaFile("", ":e")<cr>
 else
   nnoremap <leader>f :find<space>
 endif
@@ -288,8 +285,23 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
   exec a:vim_command . " " . selection
 endfunction
 
-function! SelectaFile(path, glob, command)
-  call SelectaCommand("fd -t f . " . a:path, "", a:command)
+function! SelectaFile(path, command)
+  if executable('fd')
+    call SelectaCommand("fd -t f . " . a:path, "", a:command)
+  else 
+    if getcwd() == expand('~')
+      " Allow us to search our config stored as a bare repo in the home directory.
+      call SelectaCommand("git --git-dir=" . expand('~') . "/.cfg ls-files", "", ":e")
+    else
+      call SelectaCommand("find * -type f", "", ":e")
+    endif
+  endif
+  " if executable('fd')
+  "   nnoremap <leader>f :call SelectaFile(".", "*", ":edit")<cr>
+  " else
+  "   nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
+  " endif
+  " call SelectaCommand("fd -t f . " . a:path, "", a:command)
 endfunction
 
 " Run interpreters based on the current ft
