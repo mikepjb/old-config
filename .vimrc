@@ -220,6 +220,11 @@ call MapCR()
 " CR for general run this
 " Shift + CR for run the last test file that was run
 
+" If we've previously run a test in our vim instance, we'll prefer running the last test file
+let g:test_mode = 0
+let g:last_clj_test_ns = ''
+let g:last_test_file = ''
+
 function! RunFile(...)
   if a:0
     let command_suffix = a:1
@@ -231,17 +236,25 @@ function! RunFile(...)
   let in_test_file = match(expand("%"), '\(_test.clj\|_test.cljc\|_test.cljs\|test_.*\.py\|_test.py\|.test.ts\|.test.ts\)$') != -1
 
   if expand("%") != ""
-    :w
+    " avoid printing 2 lines and requiring the user to hit CR after each run.
+    silent :w
   endif
 
-  if in_test_file
-    " set test file
-    " run test file
+  if in_test_file || g:test_mode == 1
+    let g:test_mode = 1
+
+    if in_test_file
+      let g:last_test_file = expand("%")
+      if &filetype == 'clojure'
+        let g:last_clj_test_ns = g:fireplace#ns()
+      endif
+    endif
+
     if &filetype == 'clojure'
       " will fail if there is no live REPL via fireplace
-      :RunTests
+      execute('RunTests ' . g:last_clj_test_ns)
     else
-      echom "No test run configured for filetype:" &filetype
+      echo "No test run configured for filetype:" &filetype
     endif
   else
     if &filetype == 'clojure'
