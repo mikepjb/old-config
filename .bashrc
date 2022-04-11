@@ -95,3 +95,7 @@ if [ "$OS" = "Mac" ]; then
     . $(brew --prefix)/etc/bash_completion
   fi
 fi
+
+if [ -f "$HOME/.bashrc.local" ]; then
+  source "$HOME/.bashrc.local"
+fi
