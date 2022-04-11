@@ -37,7 +37,7 @@ syn on
 filetype plugin indent on
 set nocompatible nu autowrite hidden shiftwidth=2 tabstop=2 gdefault mouse=a
 set clipboard=unnamed,unnamedplus expandtab smarttab ignorecase smartcase
-set iskeyword+=- path+=** wildmode=longest,list wildmenu noswapfile textwidth=79
+set iskeyword+=- path+=** wildmode=longest,list wildmenu noswapfile textwidth=99
 set stl=--\ %1*%F%m%r%h%w%*\ %=\ %y\ -\ [%l,%c]\ [%L,%p%%] showtabline=1
 if v:version >= 800 | set shortmess+=c | endif
 set hlsearch cot+=preview scrolloff=3 nobackup nowritebackup
@@ -220,7 +220,35 @@ function! MapCR()
 endfunction
 call MapCR()
 
+" CR for general run this
+" Shift + CR for run the last test file that was run
+
+" clj, py, node
 function! RunFile(...)
+  if a:0
+    let command_suffix = a:1
+  else
+    let command_suffix = ""
+  endif
+
+  " Are we in a test file?
+  let in_test_file = match(expand("%"), '\(_test.clj\|_test.cljc\|_test.cljs\|test_.*\.py\|_test.py\|.test.ts\|.test.ts\)$') != -1
+
+  if expand("%") != ""
+    :w
+  endif
+
+  if in_test_file
+    " set test file
+    " run test file
+    if &filetype == 'clojure'
+      :RunTests
+    else
+      echom "I would run a test file here"
+    endif
+  else
+    echom "I would send the file to it's interpreter"
+  endif
 endfunction
 
 " Like Emacs, clear certain states (e.g hlsearch) and pass through C-g behaviour.
