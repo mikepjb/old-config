@@ -61,7 +61,7 @@ alias vi='vim'
 alias get-music='youtube-dl --extract-audio --audio-format m4a'
 alias rkb='xset r rate 200 25 && setxkbmap -layout us -option ctrl:nocaps'
 alias pg='pg_ctl -D /usr/local/var/postgres' # start/stop
-alias config='/usr/bin/git --git-dir=/home/mikepjb/.cfg/ --work-tree=/home/mikepjb'
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
 gxi() { grep -r --color=always --exclude-dir={web-target,.clj-kondo,node_modules,out,target} "$@"; }
 gx() { gxi "$@" | less -R; }
