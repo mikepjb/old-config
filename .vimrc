@@ -238,6 +238,10 @@ function! RunFile(...)
   if expand("%") != ""
     " avoid printing 2 lines and requiring the user to hit CR after each run.
     silent :w
+
+    if &filetype == 'clojure'
+      silent :Require
+    endif
   endif
 
   if in_test_file || g:test_mode == 1
