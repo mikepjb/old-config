@@ -223,7 +223,6 @@ call MapCR()
 " CR for general run this
 " Shift + CR for run the last test file that was run
 
-" clj, py, node
 function! RunFile(...)
   if a:0
     let command_suffix = a:1
@@ -242,12 +241,21 @@ function! RunFile(...)
     " set test file
     " run test file
     if &filetype == 'clojure'
+      " will fail if there is no live REPL via fireplace
       :RunTests
     else
-      echom "I would run a test file here"
+      echom "No test run configured for filetype:" &filetype
     endif
   else
-    echom "I would send the file to it's interpreter"
+    if &filetype == 'clojure'
+      echom "I would send the file to it's interpreter"
+    elseif &filetype == 'python'
+      :!python -i %
+    elseif &filetype == 'javascript'
+      :!node -i -e "$(< %)"
+    else
+      echom "No run configured for filetype:" &filetype
+    endif
   endif
 endfunction
 

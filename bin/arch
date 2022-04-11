@@ -5,17 +5,18 @@ print('hello')
 packages = {
         'core': [
             'linux', 'linux-headers', # headers required for building virtualbox via dkms
+            'nodejs', 'npm',
             'gvim',
 
             ],
         'aur': ['slack-desktop'],
         }
 
-"
+"""
 pacman -S --needed git base-devel
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
-"
+"""
 
 print('ok')
