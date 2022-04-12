@@ -320,7 +320,3 @@ function! SelectaFile(path, command)
   " endif
   " call SelectaCommand("fd -t f . " . a:path, "", a:command)
 endfunction
-
-" Run interpreters based on the current ft
-" TODO come back with gary
-" map <CR> :!node -i -e "$(< %)"<CR>

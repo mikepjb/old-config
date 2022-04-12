@@ -1,22 +1,151 @@
 #!/usr/bin/env python3
 
-print('hello')
+# TODO requires yay to be installed for AUR packages
+
+import os
+import tempfile
+from shutil import which
+
+print('Arch Configuration Script Initialised..')
+
+################################################################################
+# Variables
+################################################################################
 
 packages = {
         'core': [
-            'linux', 'linux-headers', # headers required for building virtualbox via dkms
+            'base', 'linux', 'linux-headers', # headers required for building virtualbox via dkms
+            'pacman', 'pacman-contrib',
             'nodejs', 'npm',
+            'python', 'pyright',
+            'ruby'
+            'clojure',
+            'tmux',
             'gvim',
-
+            'git',
+            'v4l-utils', # webcam config tool (gui is qv4l2)
+            'amd-ucode', 'intel-ucode', # only one is enabled via bootctl
+            'xterm', 'sudo'
+            'aws-cli',
+            'papirus-icon-theme',
+            'rofi',
+            'gimp',
+            'vlc',
+            'libreoffice-fresh',
+            'firefox',
+            'chromium',
+            'discord',
+            'feh',
+            'cinnamon',
+            'steam',
+            'telegram-desktop',
+            'ttf-dejavu',
+            'noto-fonts',
+            'xorg-xinit'
+            'pulseaudio',
+            'pulseaudio-bluetooth',
+            'virtualbox',
+            'virtualbox-host-dkms',
+            'tiled',
+            'imagemagick',
+            'curl',
+            'wget',
+            'alsa',
+            'alsa-utils',
+            'ripgrep',
+            'blueberry',
+            'bluez',
+            'bluez-utils',
+            'dhcpcd',
+            'ntp',
+            'samba',
+            'unrar', 'zip', 'unzip',
+            'neofetch', 'htop',
+            'ffmpeg',
+            'handbrake',
+            'libguestfs',
+            'libxml2',
+            'ntfs-3g',
+            'iw', # cute wireless cli
+            # email client?
+            # image org/edit?
             ],
-        'aur': ['slack-desktop'],
+        'aur': [
+            'slack-desktop',
+            'minecraft-launcher',
+            'aseprite',
+            ],
+        'group': [
+            'xorg',
+            'base-devel',
+            'libretro', # retroarch & friends
+            ]
         }
 
-"""
-pacman -S --needed git base-devel
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-"""
+################################################################################
+# Core Setup
+# make sure we have a bootloader/fstab etc, locale is set..
+################################################################################
 
-print('ok')
+def core():
+    pass
+
+# TODO install_yay fn
+# TODO enable ssh by default (maybe disable on laptop?)
+# TODO include swapfile
+# TODO DNS 1.1.1.1 1.0.0.1
+
+################################################################################
+# Package Management
+# Here we are discovering what's installed for updates/purges.
+################################################################################
+
+# TODO not all of the output gets shown after Y/n but it does seem to install.
+def install_yay():
+    if which('yay') is None:
+        with tempfile.TemporaryDirectory() as tmp:
+            return os.popen(f"""
+                git clone https://aur.archlinux.org/yay.git {tmp} &&
+                cd {tmp} && makepkg -si
+                """).read()
+
+def installed_packages():
+    return os.popen('pacman -Qq').read().split()
+
+def dependencies(pname):
+    return os.popen('pactree -sl {}'.format(pname)).read().split()
+
+def group_packages(gname): # packages that belong to a particular group
+    return os.popen('pacman -Sgq {}'.format(gname)).read().split()
+
+def all_group_packages(gpkgs):
+    return [p for gl in map(lambda gp: group_packages(gp), gpkgs) for p in gl]
+
+def required_core_packages(): # packages required by the OS according to packages var.
+    return packages['core'] + all_group_packages(packages['group'])
+
+def debug_info():
+    print('Debug Info:')
+    print('{} installed packages'.format(len(installed_packages())))
+
+def install_core_packages(pkgs):
+    os.popen(f"sudo pacman -Syu {' '.join(pkgs)}")
+
+def install_aur_packages(pkgs):
+    os.popen(f"yay -S {' '.join(pkgs)}")
+
+def manage_packages(): # super fn that executes the above package fns
+    install_yay()
+    install_core_packages(required_core_packages())
+    install_aur_packages(packages['aur'])
+
+# N.B we have to install packages first because we may not have pacman-contrib which contains
+# pactree, which we use to get a total list of dependencies.
+
+debug_info()
+
+# print(dependencies('vim'))
+print(group_packages('base-devel'))
+print(all_group_packages(packages['group']))
+
+manage_packages()
