@@ -66,7 +66,7 @@ packages = {
             'libguestfs',
             'libxml2',
             'ntfs-3g',
-            'iw', # cute wireless cli
+            'iwd', # cute wireless cli
             # email client?
             # image org/edit?
             ],
@@ -94,6 +94,8 @@ def core():
 # TODO enable ssh by default (maybe disable on laptop?)
 # TODO include swapfile
 # TODO DNS 1.1.1.1 1.0.0.1
+
+# useradd -G wheel,audio,lp mikepjb (prompt?)
 
 ################################################################################
 # Package Management
