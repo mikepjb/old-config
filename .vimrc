@@ -265,6 +265,8 @@ function! RunFile(...)
       echom "I would send the file to it's interpreter"
     elseif &filetype == 'python'
       :!python -i %
+    elseif &filetype == 'sh'
+      :!./%
     elseif &filetype == 'javascript'
       :!node -i -e "$(< %)"
     else
