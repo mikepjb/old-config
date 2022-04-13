@@ -1,0 +1,49 @@
+*font:  xft:inconsolata:size=10:antialias=true
+*utf8: 1
+*termName: xterm-256color
+URxvt*termName: rxvt-unicode
+URxvt.urlLauncher: /usr/bin/chromium
+URxvt*depth: 32
+urxvt*background: rgba:1A00/1900/1700/fa00
+URxvt.scrollBar: off
+URxvt*iconFile: /usr/share/icons/Papirus/48x48/apps/urxvt.svg
+URxvt*geometry: 160x50
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+
+! special
+*.foreground:   #fafaf9
+*.background:   #1c1917
+*.cursorColor:  #fafaf9
+
+! black
+*.color0:       #1c1917
+*.color8:       #44403c
+
+! red
+*.color1:       #fca5a5
+*.color9:       #fecaca
+
+! green
+*.color2:       #bef264
+*.color10:      #d9f99d
+
+! yellow
+*.color3:       #fcd34d
+*.color11:      #fde68a
+
+! blue
+*.color4:       #7dd3fc
+*.color12:      #bae6fd
+
+! magenta
+*.color5:       #c4b5fd
+*.color13:      #ddd6fe
+
+! cyan
+*.color6:       #67e8f9
+*.color14:      #a5f3fc
+
+! white
+*.color7:       #d6d3d1
+*.color15:      #e7e5e4
