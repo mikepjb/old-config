@@ -73,7 +73,7 @@ setglobal tags=./tags;
 runtime macros/matchit.vim
 let g:ftplugin_sql_omni_key = '<Nop>' " ctrl+c is for escape, not completion.
 
-colorscheme rollout
+colorscheme tailstone
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Language Specific Configuration

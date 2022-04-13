@@ -10,15 +10,18 @@ URxvt*iconFile: /usr/share/icons/Papirus/48x48/apps/urxvt.svg
 URxvt*geometry: 160x50
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.iso14755: false
+URxvt.iso14755_52: false
 
+! foreground is 900-100, colors are 300-100 except black which is 700-400
 ! special
 *.foreground:   #fafaf9
 *.background:   #1c1917
 *.cursorColor:  #fafaf9
 
 ! black
-*.color0:       #1c1917
-*.color8:       #44403c
+*.color0:       #44403c
+*.color8:       #a8a29e
 
 ! red
 *.color1:       #fca5a5

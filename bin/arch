@@ -18,14 +18,14 @@ packages = {
             'pacman', 'pacman-contrib',
             'nodejs', 'npm',
             'python', 'pyright',
-            'ruby'
+            'ruby',
             'clojure',
             'tmux',
             'gvim',
             'git',
             'v4l-utils', # webcam config tool (gui is qv4l2)
             'amd-ucode', 'intel-ucode', # only one is enabled via bootctl
-            'xterm', 'sudo'
+            'xterm', 'sudo',
             'aws-cli',
             'papirus-icon-theme',
             'rofi',
@@ -37,7 +37,7 @@ packages = {
             'discord',
             'feh',
             'cinnamon',
-            'steam',
+            'steam', # steam can't be found
             'telegram-desktop',
             'ttf-dejavu',
             'noto-fonts',
@@ -96,6 +96,13 @@ def core():
 # TODO DNS 1.1.1.1 1.0.0.1
 
 # useradd -G wheel,audio,lp mikepjb (prompt?)
+# systemctl enable/start iwd
+# sudo cp /bin/vim /bin/vi
+# pacman-key --populate archlinux
+# iwd backend.conf file for network manager applet
+
+# league icon is not named the same as the .desktop file in papirus
+# sudo cp /usr/share/icons/Papirus/48x48/apps/{league-of-legends,leagueoflegends}.svg
 
 ################################################################################
 # Package Management
@@ -103,6 +110,7 @@ def core():
 ################################################################################
 
 # TODO not all of the output gets shown after Y/n but it does seem to install.
+# TODO gcc/make required for this, included in base-devel
 def install_yay():
     if which('yay') is None:
         with tempfile.TemporaryDirectory() as tmp:
