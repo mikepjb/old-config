@@ -94,6 +94,7 @@ def core():
 # TODO enable ssh by default (maybe disable on laptop?)
 # TODO include swapfile
 # TODO DNS 1.1.1.1 1.0.0.1
+# TODO configure CPU Governer
 
 # useradd -G wheel,audio,lp mikepjb (prompt?)
 # systemctl enable/start iwd
@@ -152,10 +153,26 @@ def manage_packages(): # super fn that executes the above package fns
 # N.B we have to install packages first because we may not have pacman-contrib which contains
 # pactree, which we use to get a total list of dependencies.
 
+################################################################################
+# Configuration
+# Here we are setting our personal preferences
+################################################################################
+
+def git_config():
+    pass
+
+def transparent_cinnamon_panel():
+    os.popen("sudo sed -i \'/#panel *{/,/}/{s/\\(background-color: *\\)#555555;/\\background-color: rgba(80,80,80,0.85);/}\' /usr/share/cinnamon/theme/cinnamon.css")
+
+def configuration():
+    git_config()
+    transparent_cinnamon_panel()
+
 debug_info()
 
 # print(dependencies('vim'))
 print(group_packages('base-devel'))
 print(all_group_packages(packages['group']))
 
-manage_packages()
+# manage_packages()
+configuration()
