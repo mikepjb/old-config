@@ -23,6 +23,7 @@ packages = {
             'tmux',
             'gvim',
             'git',
+            'dnsutils', # dig
             'v4l-utils', # webcam config tool (gui is qv4l2)
             'amd-ucode', 'intel-ucode', # only one is enabled via bootctl
             'xterm', 'sudo',
