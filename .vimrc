@@ -256,7 +256,11 @@ function! RunFile(...)
 
     if &filetype == 'clojure'
       " will fail if there is no live REPL via fireplace
-      execute('RunTests ' . g:last_clj_test_ns)
+      if expand('%:e') == 'cljs'
+        echo fireplace#cljs().Query("(with-out-str (cljs.test/run-tests '" . g:last_clj_test_ns . '))')
+      else
+        execute('RunTests ' . g:last_clj_test_ns)
+      endif
     else
       echo "No test run configured for filetype:" &filetype
     endif

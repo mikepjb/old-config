@@ -15,6 +15,7 @@ detect_os() {
 detect_os
 
 [ -f /etc/bash_completion ] && . /etc/bash_completion
+[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 [[ $- =~ i ]] && stty -ixoff -ixon # Disable CTRL-S and CTRL-Q
 
 join_by() { local IFS="$1"; shift; echo "$*"; }
@@ -37,6 +38,7 @@ path_dirs=(
 )
 
 export PATH=$(join_by : "${path_dirs[@]}")
+export CDPATH=".:$HOME/src"
 export EDITOR=vim
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
@@ -44,7 +46,6 @@ export HISTSIZE=10000
 # export XDG_CONFIG_HOME=$HOME/.config # should only be set for linux..
 export PAGER='less -S'
 export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.socket
-export CDPATH=$HOME/src
 export NPM_CONFIG_PREFIX=$HOME/.config/npm
 export GEM_HOME=$HOME/.config/gems
 
@@ -58,6 +59,7 @@ alias jv="jq -C | less -R"
 alias ssha="ssh-agent -a $SSH_AUTH_SOCK && ssh-add ~/.ssh/id_rsa"
 # alias open='xdg-open' # only for linux
 alias vi='vim'
+alias nm='neomutt'
 alias get-music='youtube-dl --extract-audio --audio-format m4a'
 alias rkb='xset r rate 200 25 && setxkbmap -layout us -option ctrl:nocaps'
 alias pg='pg_ctl -D /usr/local/var/postgres' # start/stop
@@ -85,10 +87,6 @@ jobs_marker() {
 }
 
 PROMPT_COMMAND='PS1="\W($(git_state)) $(jobs_marker) "'
-
-# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-# source /usr/local/share/chruby/chruby.sh
-# chruby 2.7.1
 
 if [ "$OS" = "Mac" ]; then
   if [ -f $(brew --prefix)/etc/bash_completion ]; then

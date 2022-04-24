@@ -16,10 +16,19 @@ packages = {
         'core': [
             'base', 'linux', 'linux-headers', # headers required for building virtualbox via dkms
             'pacman', 'pacman-contrib',
+            'net-tools', # ifconfig etc
+            'neomutt', # email client
+            'bash',
+            'bash-completion',
+            'pass', # cli password manager
+            'isync',
+            'msmtp',
+            'lynx', # Terminal web browser, used in neomutt
             'nodejs', 'npm',
             'python', 'pyright',
             'ruby',
             'clojure',
+            'rlwrap',
             'tmux',
             'gvim',
             'git',
@@ -27,7 +36,6 @@ packages = {
             'v4l-utils', # webcam config tool (gui is qv4l2)
             'amd-ucode', 'intel-ucode', # only one is enabled via bootctl
             'xterm', 'sudo',
-            'aws-cli',
             'papirus-icon-theme',
             'rofi',
             'gimp',
@@ -45,6 +53,7 @@ packages = {
             'xorg-xinit'
             'pulseaudio',
             'pulseaudio-bluetooth',
+            'qemu', 'libvirt', 'virt-manager', 'dnsmasq', 'dmidecode',
             'virtualbox',
             'virtualbox-host-dkms',
             'tiled',
@@ -75,6 +84,9 @@ packages = {
             'slack-desktop',
             'minecraft-launcher',
             'aseprite',
+            'mutt-wizard', # set up email for neomutt with mw
+            'python-frida', # injection library for fixing league client timeout
+            'aws-cli-v2-bin',
             ],
         'group': [
             'xorg',
@@ -158,6 +170,15 @@ def manage_packages(): # super fn that executes the above package fns
 # Configuration
 # Here we are setting our personal preferences
 ################################################################################
+
+def vm_config():
+    # sudo systemctl enable --now libvirtd
+    # sudo virsh net-start default
+    # sudo virsh net-autostart default
+    # sudo usermod -a -G libvirt (whoami/mikepjb)
+    # sudo usermod -a -G libvirt-qemu (whoami/mikepjb)
+    # echo 'options kvm ignore_msrs=1' > /etc/modprobe.d/kvm.conf
+    pass
 
 def git_config():
     pass

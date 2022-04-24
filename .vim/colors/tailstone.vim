@@ -4,7 +4,7 @@ if exists("syntax_on")
 endif
 set background=dark
 
-let g:colors_name = "rollout"
+let g:colors_name = "tailstone"
 
 hi Normal ctermfg=NONE " ex line text & some special chars :? etc?
 hi Constant ctermfg=5

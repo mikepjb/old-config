@@ -1,1 +1,4 @@
 .cfg
+.mutt/aliases
+.mutt/cache
+.mutt/certificates
