@@ -46,6 +46,7 @@ packages = {
             'discord',
             'feh',
             'cinnamon',
+            'gnome-screenshot', # use by cinnamon for screenshot
             'steam', # steam can't be found
             'telegram-desktop',
             'ttf-dejavu',
