@@ -1,0 +1,9 @@
+[X-GNOME-Metatheme]
+Name=Tailstone
+Type=X-GNOME-Metatheme
+Comment=Plain, unobtrusive theme
+Encoding=UTF-8
+GtkTheme=Tailstone
+IconTheme=Tailstone
+CursorTheme=Tailstone
+CursorSize=24
