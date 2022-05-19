@@ -1,0 +1,8 @@
+configuration {
+  modi: [window,drun,ssh,combi,run];
+  font: "Inter 10";
+  combi-modi: [window,drun,ssh,run];
+  show-icons: false;
+}
+@import "tailstone-dark"
+@theme "tailstone-dark"

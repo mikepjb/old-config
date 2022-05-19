@@ -1,0 +1,152 @@
+/**
+ * Tailstone Theme
+ * Rofi version: 1.7.3
+ **/
+* {
+    background:           rgba(28, 25, 23, 1);
+    foreground:           rgba(250, 250, 249, 1);
+    alternate-background: rgba(41, 37, 36, 1);
+    hover-background:     rgba(68, 64, 60, 1);
+    background-color:     var(background);
+}
+element {
+    padding: 1px ;
+    cursor:  pointer;
+    spacing: 5px ;
+    border:  0;
+}
+element normal.normal {
+    background-color: var(background);
+    text-color:       var(foreground);
+}
+element normal.urgent {
+    background-color: var(hover-background);
+    text-color:       var(foreground);
+}
+element normal.active {
+    background-color: var(hover-background);
+    text-color:       var(foreground);
+}
+element selected.normal {
+    background-color: var(hover-background);
+    text-color:       var(foreground);
+}
+element selected.urgent {
+    background-color: var(hover-background);
+    text-color:       var(foreground);
+}
+element selected.active {
+    background-color: var(hover-background);
+    text-color:       var(foreground);
+}
+element alternate.normal {
+    background-color: var(alternate-background);
+    text-color:       var(foreground);
+}
+element alternate.urgent {
+    background-color: var(alternate-background);
+    text-color:       var(foreground);
+}
+element alternate.active {
+    background-color: var(alternate-background);
+    text-color:       var(foreground);
+}
+element-text {
+    background-color: transparent;
+    cursor:           inherit;
+    highlight:        inherit;
+    text-color:       inherit;
+}
+element-icon {
+    background-color: transparent;
+    size:             10em;
+    cursor:           inherit;
+    text-color:       inherit;
+}
+window {
+  width: 25%;
+    padding:          5;
+    background-color: var(background);
+    border:           1;
+}
+mainbox {
+    padding: 0;
+    border:  0;
+}
+message {
+    padding:      1px ;
+    border-color: var(foreground);
+    border:       2px dash 0px 0px ;
+}
+textbox {
+    text-color: var(foreground);
+}
+listview {
+    padding:      2px 0px 0px ;
+    scrollbar:    true;
+    border-color: var(foreground);
+    spacing:      2px ;
+    fixed-height: 0;
+    border:       2px dash 0px 0px ;
+}
+scrollbar {
+    width:        4px ;
+    padding:      0;
+    handle-width: 8px ;
+    border:       0;
+    handle-color: var(foreground);
+}
+sidebar {
+    border-color: var(separatorcolor);
+    border:       2px dash 0px 0px ;
+}
+button {
+    cursor:     pointer;
+    spacing:    0;
+    text-color: var(foreground);
+}
+button selected {
+    background-color: var(background);
+    text-color:       var(foreground);
+}
+num-filtered-rows {
+    expand:     false;
+    text-color: rgba(168, 162, 158, 1);
+}
+num-rows {
+    expand:     false;
+    text-color: rgba(168, 162, 158, 1);
+}
+textbox-num-sep {
+    expand:     false;
+    str:        "/";
+    text-color: rgba(168, 162, 158, 1);
+}
+inputbar {
+    padding:    1px ;
+    spacing:    0px ;
+    text-color: var(foreground);
+    children:   [ "prompt","textbox-prompt-colon","entry","num-filtered-rows","textbox-num-sep","num-rows","case-indicator" ];
+}
+case-indicator {
+    spacing:    0;
+    text-color: var(foreground);
+}
+entry {
+    text-color:        var(foreground);
+    cursor:            text;
+    spacing:           0;
+    placeholder-color: Gray;
+    placeholder:       "Type to filter";
+}
+prompt {
+    spacing:    0;
+    text-color: var(foreground);
+}
+textbox-prompt-colon {
+  /* could have multiple margins like css? */
+    margin:     0px;
+    expand:     false;
+    str:        ":";
+    text-color: inherit;
+}
