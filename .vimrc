@@ -82,6 +82,7 @@ colorscheme tailstone
 augroup language
   autocmd!
 
+  au BufNewFile,BufRead *.bb set ft=clojure
   au Syntax clojure nmap <buffer> gd <Plug>FireplaceDjump
 
   " Leave the return key alone when in command line windows, since it's used
@@ -266,7 +267,11 @@ function! RunFile(...)
     endif
   else
     if &filetype == 'clojure'
-      echom "I would send the file to it's interpreter"
+      if getline(1) == '#!/usr/bin/env bb'
+        :!./%
+      else
+        echom "I would send the file to it's interpreter"
+      endif
     elseif &filetype == 'python'
       :!python -i %
     elseif &filetype == 'sh'
