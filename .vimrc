@@ -1,9 +1,5 @@
 " Vim Configuration
 
-" TODO in main config, include prettier/eslint etc for JS/TS a base install
-" TODO same for clj-kondo et al.
-" TODO word wrap at like.. 100/120 width instead of 80
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins (and remove all existing autocmds)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -26,7 +22,8 @@ Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'dense-analysis/ale' " lsp + linting
-" TODO include colorscheme in it's own git project to import here.
+Plug 'mikepjb/vim-fold', { 'for': ['markdown'] }
+Plug 'mikepjb/vim-tailstone'
 
 call plug#end()
 
@@ -41,7 +38,7 @@ set iskeyword+=- path+=** wildmode=longest,list wildmenu noswapfile textwidth=99
 set stl=--\ %1*%F%m%r%h%w%*\ %=\ %y\ -\ [%l,%c]\ [%L,%p%%] showtabline=1
 if v:version >= 800 | set shortmess+=c | endif
 set hlsearch cot+=preview scrolloff=3 nobackup nowritebackup
-set backspace=indent,eol,start showcmd
+set backspace=indent,eol,start showcmd noerrorbells
 set fillchars=stlnc:\-,stl:\-,vert:\|
 set modeline modelines=3 foldmethod=manual nofoldenable nojoinspaces autoread
 set timeout timeoutlen=1000 ttimeoutlen=100
@@ -54,13 +51,18 @@ set completeopt=menu,preview
 if !isdirectory("/tmp/.vim-undo-dir")
     call mkdir("/tmp/.vim-undo-dir", "", 0700)
 endif
-set undodir=/tmp/.vim-undo-dir
-set undofile
+set undodir=/tmp/.vim-undo-dir undofile
 
 let g:sh_noisk=1 "stop vim messing with iskeyword when opening a shell file
 
 syntax on
 filetype plugin indent on
+
+setglobal tags=./tags;
+runtime macros/matchit.vim
+let g:ftplugin_sql_omni_key = '<Nop>' " ctrl+c is for escape, not completion.
+
+colorscheme tailstone
 
 setglobal grepformat=%f:%l:%c:%m,%f:%l:%m,%f:%l%m,%f\ \ %l%m
 if executable('rg')
@@ -69,11 +71,22 @@ elseif has('unix')
   " . will search for everything, remove if you want .clj etc
   setglobal grepprg=grep\ -rn\ $*\ .\ /dev/null
 endif
-setglobal tags=./tags;
-runtime macros/matchit.vim
-let g:ftplugin_sql_omni_key = '<Nop>' " ctrl+c is for escape, not completion.
 
-colorscheme tailstone
+function! Grep(...)
+	return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+endfunction
+
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
+
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
+cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
+
+augroup quickfix
+	autocmd!
+	autocmd QuickFixCmdPost cgetexpr cwindow
+	autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Language Specific Configuration
@@ -84,11 +97,13 @@ augroup language
 
   au BufNewFile,BufRead *.bb set ft=clojure
   au Syntax clojure nmap <buffer> gd <Plug>FireplaceDjump
+  au Syntax clojure nmap <buffer> gl :Last<cr>
 
   " Leave the return key alone when in command line windows, since it's used
   " to run commands there.
   autocmd! CmdwinEnter * :unmap <cr>
   autocmd! CmdwinLeave * :call MapCR()
+  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
   " javascript
   autocmd! FileType javascript set sw=2 sts=2 expandtab
@@ -146,12 +161,11 @@ else
   nnoremap <leader>f :find<space>
 endif
 nnoremap <Leader>e :e <C-R>=expand("%:p:h") . '/'<CR>
-nnoremap <leader>g :grep<space>
+nnoremap <leader>g :Grep<space>
 nnoremap <leader>l :e ~/.log.md<cr>
+nnoremap <leader>i :e ~/.vimrc<cr>
 nnoremap <leader>n :e ~/.notes.md<cr>
 nnoremap <leader>b :b<space>
-
-" nnoremap <Tab> <C-^>
 
 imap <C-c> <esc>
 map <C-h> <C-w><C-h>
@@ -163,7 +177,6 @@ cnoremap <C-b> <Left>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 cnoremap <C-d> <Delete>
-cnoremap <expr> %% expand('%:h').'/'
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
 inoremap <C-d> <Delete>
@@ -182,18 +195,18 @@ nnoremap gq :copen<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Multi purpose Tab key
 function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col
-        return "\<tab>"
-    endif
+  let col = col('.') - 1
+  if !col
+    return "\<tab>"
+  endif
 
-    let char = getline('.')[col - 1]
-    if char =~ '\k'
-        " There's an identifier before the cursor, so complete the identifier.
-        return "\<c-p>"
-    else
-        return "\<tab>"
-    endif
+  let char = getline('.')[col - 1]
+  if char =~ '\k'
+    " There's an identifier before the cursor, so complete the identifier.
+    return "\<c-p>"
+  else
+    return "\<tab>"
+  endif
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
@@ -270,7 +283,8 @@ function! RunFile(...)
       if getline(1) == '#!/usr/bin/env bb'
         :!./%
       else
-        echom "I would send the file to it's interpreter"
+        :Require
+        :Eval (user/reset)
       endif
     elseif &filetype == 'python'
       :!python -i %
@@ -278,6 +292,10 @@ function! RunFile(...)
       :!./%
     elseif &filetype == 'javascript'
       :!node -i -e "$(< %)"
+    elseif &filetype == 'markdown'
+      normal za
+    elseif &filetype == 'qf'
+      execute "normal! \<CR>"
     else
       echom "No run configured for filetype:" &filetype
     endif
