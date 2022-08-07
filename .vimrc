@@ -144,6 +144,8 @@ let g:ale_fixers = {
       \}
 " Vim-ale handles TypeScript quickfix, so tell Tsuquyomi not to do it.
 let g:tsuquyomi_disable_quickfix = 1
+" Give Ref call a binding so it doesn't hijack C-^
+nmap <buffer> <leader><C-]> <Plug>(TsuquyomiReferences)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Simple Keybinds
